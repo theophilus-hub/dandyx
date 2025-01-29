@@ -7,6 +7,7 @@ function Featured() {
         <div className='px-2 md:px-32 flex justify-center items-center'>
             <img
             src={"/frame.png"}
+            alt='frame'
         />
         </div>
         

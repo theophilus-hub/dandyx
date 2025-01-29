@@ -11,7 +11,7 @@ function Section3() {
             All Advantages in One{" "}
           </h2>
           <div className="flex space-x-1 items-start px-10 py-6">
-            <img src={"/icon.png"} className="h-[32px] mt-1" />
+            <img src={"/icon.png"} alt='icon' className="h-[32px] mt-1" />
             <div className="flex flex-col px-2 self-start space-y-1">
               <h2 className="font-bold text-xl text-text">User Privacy</h2>
               <p className="text-textsecc font-normal text-sm">
@@ -22,7 +22,7 @@ function Section3() {
             </div>
           </div>
           <div className="flex space-x-1 items-start px-10 ">
-            <img src={"/icon.png"} className="h-[32px] mt-1" />
+            <img src={"/icon.png"} alt='icon' className="h-[32px] mt-1" />
             <div className="flex flex-col px-2 self-start space-y-1">
               <h2 className="font-bold text-xl text-text">Safety</h2>
               <p className="text-textsecc font-normal text-sm">
@@ -34,7 +34,7 @@ function Section3() {
             </div>
           </div>
           <div className="flex space-x-1 items-start px-10 ">
-            <img src={"/icon.png"} className="h-[32px] mt-1" />
+            <img src={"/icon.png"} alt='icon' className="h-[32px] mt-1" />
             <div className="flex flex-col px-2 self-start space-y-1">
               <h2 className="font-bold text-xl text-text">
                 Streamlined Transaction
@@ -47,7 +47,7 @@ function Section3() {
             </div>
           </div>
           <div className="flex space-x-1 items-start px-10 ">
-            <img src={"/icon.png"} className="h-[32px] mt-1" />
+            <img src={"/icon.png"} alt='icon' className="h-[32px] mt-1" />
             <div className="flex flex-col px-2 self-start space-y-1">
               <h2 className="font-bold text-xl text-text">
                 Stalwart protection protocols

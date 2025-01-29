@@ -1,7 +1,51 @@
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import { useState } from "react";
+import { supabase } from "@/utils/supabase";
+import { useRouter } from "next/navigation";
 
 function SignUp() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cPassword, setCPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [stateError, setStateError] = useState(null);
+  const router = useRouter();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle signup logic here
+  };
+
+  const handleClick = async () => {
+    setStateError("");
+    setLoading(true);
+    // const supabase = createClient();
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          fname: firstName,
+          lname: lastName,
+          email: email,
+        },
+      },
+    });
+    if (error) {
+      setStateError(error.message);
+    } else {
+    }
+    if (data) {
+      router.push("dashboard");
+    }
+
+    setLoading(false);
+  };
+
   return (
     <>
       <div className="hidden w-full h-screen  md:flex font-poppins">
@@ -23,49 +67,81 @@ function SignUp() {
         <div className=" w-2/3 px-28 xl:px-60 py-36">
           <div className="w-full h-full p-2">
             <h1 className="text-5xl text-heading font-bold">Create Account</h1>
-            <div className="flex flex-col space-y-6 py-24">
-              <div className="flex space-x-7">
-                <div className="w-full space-y-1">
-                  <label className="text-heading font-semibold">
-                    First Name
-                  </label>
-                  <input className="border border-border w-full  rounded-lg h-12" />
-                </div>
-                <div className="w-full space-y-1">
-                  <label className="text-heading font-semibold">
-                    Last Name
-                  </label>
-                  <input className="border border-border w-full  rounded-lg h-12" />
-                </div>
-              </div>
-              <div className="w-full space-y-1">
-                <label className="text-heading font-semibold">Email</label>
-                <input className="border border-border w-full  rounded-lg h-12" />
-              </div>
-              <div className="w-full space-y-1">
-                <label className="text-heading font-semibold">Password</label>
-                <input className="border border-border w-full  rounded-lg h-12" />
-              </div>
-              <div className="w-full space-y-1">
-                <label className="text-heading font-semibold">
-                  Re-type Passsword
-                </label>
-                <input className="border border-border w-full  rounded-lg h-12" />
-              </div>
 
-              <div className="w-full py-4 space-y-2">
-                <button className="bg-main flex text-center items-center justify-center h-12 w-full rounded-lg text-white font-medium text-2xl">
-                  Sign up
-                </button>
-                <p className="text-heading text-lg font-medium">
-                  Already have an account?{" "}
-                  <Link href='/login'>
-                  <span className="text-main text-xl">Login </span>
-                  </Link>
-                  
-                </p>
+            <form onSubmit={handleSubmit} className="">
+              <div className="flex flex-col space-y-6 py-24">
+                <div className="flex space-x-7">
+                  <div className="w-full space-y-1">
+                    <label className="text-heading font-semibold">
+                      First Name
+                    </label>
+                    <input
+                      className="border border-border w-full  rounded-lg h-12"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="w-full space-y-1">
+                    <label className="text-heading font-semibold">
+                      Last Name
+                    </label>
+                    <input
+                      className="border border-border w-full  rounded-lg h-12"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="w-full space-y-1">
+                  <label className="text-heading font-semibold">Email</label>
+                  <input
+                    className="border border-border w-full  rounded-lg h-12"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="w-full space-y-1">
+                  <label className="text-heading font-semibold">Password</label>
+                  <input
+                    className="border border-border w-full  rounded-lg h-12"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="w-full space-y-1">
+                  <label className="text-heading font-semibold">
+                    Re-type Passsword
+                  </label>
+                  <input
+                    className="border border-border w-full  rounded-lg h-12"
+                    value={cPassword}
+                    onChange={(e) => setCPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="w-full py-4 space-y-2">
+                  <button
+                    onClick={handleClick}
+                    disabled={loading}
+                    className="bg-main flex text-center items-center justify-center h-12 w-full rounded-lg text-white font-medium text-2xl"
+                  >
+                    {loading ? "Creating Account..." : "Sign Up"}
+                  </button>
+                  <p className="text-xs text-red-500">{stateError}</p>
+                  <p className="text-heading text-lg font-medium">
+                    Already have an account?{" "}
+                    <Link href="/login">
+                      <span className="text-main text-xl">Login </span>
+                    </Link>
+                  </p>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -127,15 +203,22 @@ function SignUp() {
                 </button>
                 <p className="text-heading text-sm font-medium">
                   Already have an account?{" "}
-                  <Link href='/login'>
-                  <span className="text-main text-base">Login </span>
+                  <Link href="/login">
+                    <span className="text-main text-base">Login </span>
                   </Link>
                 </p>
               </div>
             </div>
           </div>
-          <p className=" whitespace-nowrap text-sm z-10 text-main font-medium">Experience the fastest trading <span className="text-white">experience with your A1 Vendor </span></p>
-          <img src="/layers.png" className="absolute bottom-0 right-0 w-full" alt="" />
+          <p className=" whitespace-nowrap text-sm z-10 text-main font-medium">
+            Experience the fastest trading{" "}
+            <span className="text-white">experience with your A1 Vendor </span>
+          </p>
+          <img
+            src="/layers.png"
+            className="absolute bottom-0 right-0 w-full"
+            alt=""
+          />
         </div>
       </div>
     </>
