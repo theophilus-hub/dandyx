@@ -2,7 +2,7 @@ import React from 'react'
 
 function Nav() {
   return (
-    <div className=" relative w-1/3 xl:w-1/4 bg-secmain  rounded-r-3xl flex flex-col justify-between items-center gap-12 py-12">
+    <div className="z-50 relative w-1/3 xl:w-1/4 bg-secmain  rounded-r-3xl flex flex-col justify-between items-center gap-12 py-12">
         <div className=" w-full flex flex-col justify-center items-center px-4">
           <img src="/dandyx2.png" className="px-4" alt="" />
           <div className="bg-main w-full h-[3px] rounded-full"></div>

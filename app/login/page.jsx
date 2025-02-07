@@ -112,7 +112,7 @@ function Login() {
                   <input
                     className="border border-border w-full  rounded-lg h-12"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value.toLowerCase())}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
@@ -161,19 +161,34 @@ function Login() {
                 <label className="text-heading text-sm font-semibold">
                   Email
                 </label>
-                <input className="border border-border w-full  rounded-lg h-8" />
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value.toLowerCase())}
+                  required
+                  className="border border-border w-full  rounded-lg h-8"
+                />
               </div>
               <div className="w-full">
                 <label className="text-heading text-sm font-semibold">
                   Password
                 </label>
-                <input className="border border-border w-full  rounded-lg h-8" />
+                <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="border border-border w-full  rounded-lg h-8"
+                />
               </div>
 
               <div className="w-full py-4 space-y-2">
-                <button className="bg-main flex text-center items-center justify-center h-8 w-full rounded-lg text-white font-medium text-sm">
-                  Login
+                <button
+                  onClick={handleClick}
+                  disabled={loading}
+                  className="bg-main flex text-center items-center justify-center h-8 w-full rounded-lg text-white font-medium text-sm"
+                >
+                  {loading ? "Signing In..." : "Sign In"}
                 </button>
+                <p className="text-xs text-red-500">{stateError}</p>
                 <p className="text-heading text-sm font-medium">
                   Already have an account?{" "}
                   <Link href="/signup">

@@ -1,24 +1,47 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import logo from '@/assets/dandyx.png'
-import Link from 'next/link'
+'use client'
+
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import logo from "@/assets/dandyx.png";
+import Link from "next/link";
+import { LogOut } from "lucide-react";
+import { supabase } from "@/utils/supabase";
+import { useRouter } from "next/navigation";
+
 const navigation = [
-  { name: 'Home', href: '#', current: true },
-  { name: 'Services', href: '#', current: false },
-  { name: 'About', href: '#', current: false },
-  { name: 'FAQ', href: '#', current: false },
-]
+  { name: "Home", href: "#", current: true },
+  { name: "Services", href: "#", current: false },
+  { name: "About", href: "#", current: false },
+  { name: "FAQ", href: "#", current: false },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function MobileNav() {
+  const router = useRouter();
+
+  const logout = async () => {
+    let { error } = await supabase.auth.signOut();
+
+    if (!error) {
+      router.push("login");
+    }
+  };
+
   return (
     <Disclosure as="nav" className="">
       <div className="mx-auto max-w-7xl px-2 sm:px-2 lg:px-8 z-10">
         <div className="relative flex h-20 items-center justify-between px-4 w-full">
-          
           <div className="flex w-full items-center justify-between  sm:items-stretch ">
             <div className="flex  items-center justify-center gap-2 ">
               <img
@@ -26,7 +49,7 @@ export default function MobileNav() {
                 src={"/dandyxwhite2.png"}
                 className="h-8 w-auto"
               />
-              <h4 className='text-white font-bold'>DANDYx</h4>
+              <h4 className="text-white font-bold">DANDYx</h4>
             </div>
             <div className="hidden  sm:ml-6 sm:block">
               <div className="flex  space-x-4">
@@ -34,10 +57,9 @@ export default function MobileNav() {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={item.current ? "page" : undefined}
                     className={classNames(
-                      
-                      'rounded-md px-3 py-2 text-lg font-medium text-sec hover:text-main',
+                      "rounded-md px-3 py-2 text-lg font-medium text-sec hover:text-main"
                     )}
                   >
                     {item.name}
@@ -51,8 +73,14 @@ export default function MobileNav() {
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-xl p-2 text-text  hover:text-text ">
               <span className="absolute -inset-0.5" />
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="block h-6 w-6 group-data-[open]:hidden" />
-              <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
+              <Bars3Icon
+                aria-hidden="true"
+                className="block h-6 w-6 group-data-[open]:hidden"
+              />
+              <XMarkIcon
+                aria-hidden="true"
+                className="hidden h-6 w-6 group-data-[open]:block"
+              />
             </DisclosureButton>
           </div>
         </div>
@@ -60,59 +88,71 @@ export default function MobileNav() {
 
       <DisclosurePanel className="sm:hidden">
         <div className="z-10 space-y-1 pb-3 pt-2 absolute top-0 w-1/2 h-[115vh] bg-secmain flex flex-col items-center justify-start py-4">
-        <div className=" w-full flex flex-col justify-center items-start py-2">
-          <img src="/dandyxmobile.png" className="px-4 mb-6" alt="" />
-          <div className="bg-main w-full h-[1px] rounded-full"></div>
-          
-        </div>
-        <div className="w-full px-4 flex flex-col justify-center space-y-4 py-16 ">
-        <div>
-        <Link href="/dashboard">
-        <button className="flex items-center justify-start w-full gap-2  text-sm bg-main py-2 px-6 rounded-lg text-text">
-                <span className=' w-6 h-6 flex items-center '><img src="/overview1.png" className=''  alt="" /></span>
-                Overview
-            </button>
-        </Link>
-            
-        </div>
-        <div>
-        <Link href="/dashboard/giftcards">
-        <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
-                <span className=' w-6 h-6 flex items-center '><img src="/gift2.png" className=''  alt="" /></span>
-                Giftcards
-            </button>
-        </Link>
-            
-        </div>
-        <div>
-        <Link href="/dashboard/crypto">
-        <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
-                <span className=' w-6 h-6 flex items-center '><img src="/crypto2.png" className=''  alt="" /></span>
-                Crypto
-            </button>
-        </Link>
-            
-        </div>
-        <div>
-        <Link href="/dashboard/tx">
-        <button className="flex items-center justify-start w-full gap-2  text-xs py-2 px-6 rounded-lg text-text">
-                <span className=' w-6 h-6 flex items-center '><img src="/trans2.png" className=''  alt="" /></span>
-                Transactions
-            </button>
-        </Link>
-            
-        </div>
-        <div>
-          <Link href="/dashboard/settings">
-          <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
-                <span className=' w-6 h-6 flex items-center '><img src="/settings2.png" className=''  alt="" /></span>
-                Settings
-            </button>
-          </Link>
-            
-        </div>
-
-        </div>
+          <div className=" w-full flex flex-col justify-center items-start py-2">
+            <img src="/dandyxmobile.png" className="px-4 mb-6" alt="" />
+            <div className="bg-main w-full h-[1px] rounded-full"></div>
+          </div>
+          <div className="w-full px-4 flex flex-col justify-center space-y-4 py-16 ">
+            <div>
+              <Link href="/dashboard">
+                <button className="flex items-center justify-start w-full gap-2  text-sm bg-main py-2 px-6 rounded-lg text-text">
+                  <span className=" w-6 h-6 flex items-center ">
+                    <img src="/overview1.png" className="" alt="" />
+                  </span>
+                  Overview
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link href="/dashboard/giftcards">
+                <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
+                  <span className=" w-6 h-6 flex items-center ">
+                    <img src="/gift2.png" className="" alt="" />
+                  </span>
+                  Giftcards
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link href="/dashboard/crypto">
+                <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
+                  <span className=" w-6 h-6 flex items-center ">
+                    <img src="/crypto2.png" className="" alt="" />
+                  </span>
+                  Crypto
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link href="/dashboard/tx">
+                <button className="flex items-center justify-start w-full gap-2  text-xs py-2 px-6 rounded-lg text-text">
+                  <span className=" w-6 h-6 flex items-center ">
+                    <img src="/trans2.png" className="" alt="" />
+                  </span>
+                  Transactions
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link href="/dashboard/settings">
+                <button className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-text">
+                  <span className=" w-6 h-6 flex items-center ">
+                    <img src="/settings2.png" className="" alt="" />
+                  </span>
+                  Settings
+                </button>
+              </Link>
+            </div>
+            <div className="space-x-4 font-semibold pt-12">
+              <button
+                className="flex items-center justify-start w-full gap-2  text-sm py-2 px-6 rounded-lg text-red-500 hover:text-red-600 hover:bg-red-200"
+                onClick={logout}
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+              </button>
+            </div>
+          </div>
           {/* {navigation.map((item) => (
             <DisclosureButton
               key={item.name}
@@ -130,5 +170,5 @@ export default function MobileNav() {
         </div>
       </DisclosurePanel>
     </Disclosure>
-  )
+  );
 }

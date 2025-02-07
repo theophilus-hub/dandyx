@@ -38,9 +38,18 @@ function SignUp() {
     if (error) {
       setStateError(error.message);
     } else {
-    }
-    if (data) {
-      router.push("dashboard");
+      if (data) {
+        let { data: profile, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("email", email);
+
+        if (profile) {
+          setStateError("Account with Email already exist");
+        } else {
+          router.push("dashboard");
+        }
+      }
     }
 
     setLoading(false);
@@ -163,52 +172,84 @@ function SignUp() {
             <h3 className="text-main text-center text-sm font-medium">
               Welcome! Please input your details
             </h3>
-            <div className="flex flex-col space-y-3 py-2">
-              <div className="flex space-x-7">
-                <div className="w-full ">
-                  <label className="text-heading text-sm font-semibold">
-                    First Name
-                  </label>
-                  <input className="border border-border w-full  rounded-lg h-8" />
+            <form onSubmit={handleSubmit} className="">
+              <div className="flex flex-col space-y-3 py-2">
+                <div className="flex space-x-7">
+                  <div className="w-full ">
+                    <label className="text-heading text-sm font-semibold">
+                      First Name
+                    </label>
+                    <input
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                      className="border border-border w-full  rounded-lg h-8"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <label className="text-heading text-sm font-semibold">
+                      Last Name
+                    </label>
+                    <input
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      required
+                      className="border border-border w-full  rounded-lg h-8"
+                    />
+                  </div>
                 </div>
                 <div className="w-full">
                   <label className="text-heading text-sm font-semibold">
-                    Last Name
+                    Email
                   </label>
-                  <input className="border border-border w-full  rounded-lg h-8" />
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="border border-border w-full  rounded-lg h-8"
+                  />
+                </div>
+                <div className="w-full">
+                  <label className="text-heading text-sm font-semibold">
+                    Password
+                  </label>
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="border border-border w-full  rounded-lg h-8"
+                  />
+                </div>
+                <div className="w-full">
+                  <label className="text-heading text-sm font-semibold">
+                    Re-type Passsword
+                  </label>
+                  <input
+                    value={cPassword}
+                    onChange={(e) => setCPassword(e.target.value)}
+                    required
+                    className="border border-border w-full  rounded-lg h-8"
+                  />
+                </div>
+
+                <div className="w-full py-4 space-y-2">
+                  <button
+                    onClick={handleClick}
+                    disabled={loading}
+                    className="bg-main flex text-center items-center justify-center h-8 w-full rounded-lg text-white font-medium text-sm"
+                  >
+                    {loading ? "Creating Account..." : "Sign Up"}
+                  </button>
+                  <p className="text-xs text-red-500">{stateError}</p>
+                  <p className="text-heading text-sm font-medium">
+                    Already have an account?{" "}
+                    <Link href="/login">
+                      <span className="text-main text-base">Login </span>
+                    </Link>
+                  </p>
                 </div>
               </div>
-              <div className="w-full">
-                <label className="text-heading text-sm font-semibold">
-                  Email
-                </label>
-                <input className="border border-border w-full  rounded-lg h-8" />
-              </div>
-              <div className="w-full">
-                <label className="text-heading text-sm font-semibold">
-                  Password
-                </label>
-                <input className="border border-border w-full  rounded-lg h-8" />
-              </div>
-              <div className="w-full">
-                <label className="text-heading text-sm font-semibold">
-                  Re-type Passsword
-                </label>
-                <input className="border border-border w-full  rounded-lg h-8" />
-              </div>
-
-              <div className="w-full py-4 space-y-2">
-                <button className="bg-main flex text-center items-center justify-center h-8 w-full rounded-lg text-white font-medium text-sm">
-                  Sign up
-                </button>
-                <p className="text-heading text-sm font-medium">
-                  Already have an account?{" "}
-                  <Link href="/login">
-                    <span className="text-main text-base">Login </span>
-                  </Link>
-                </p>
-              </div>
-            </div>
+            </form>
           </div>
           <p className=" whitespace-nowrap text-sm z-10 text-main font-medium">
             Experience the fastest trading{" "}

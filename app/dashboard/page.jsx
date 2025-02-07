@@ -1,11 +1,64 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Nav from "@/components/dash/nav";
 import Header from "@/components/dash/header";
 import MobileNav from "@/components/dash/mobileNav";
 import Link from "next/link";
+import { supabase } from "@/utils/supabase";
+import { useRouter } from "next/navigation";
 
 function Dashboard() {
+const router = useRouter();
+   const [email, setEmail] = useState(null);
+  const [user, setUser] = useState({
+    name: null,
+  });
+
+  useEffect(() => {
+    getSession();
+  }, []);
+
+  const getSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (data.session) {
+      setEmail(data.session.user.email);
+      const id = data.session.user.id;
+      console.log(data.session.user);
+      getUserDetails(id);
+    }
+    if (data.session == null) {
+      router.push("login");
+    }
+  };
+
+  const getUserDetails = async (id) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select()
+      .eq("id", id);
+
+    if (data) {
+      console.log(data);
+      setUser({
+        name: data[0].fname,
+      });
+      console.log(user.name);
+    }
+    if (error) console.log(error);
+  };
+
+
+  const logout = async () => {
+    let { error } = await supabase.auth.signOut();
+
+    if (!error) {
+      router.push("login");
+    }
+  };
+
+
   return (
     <>
       <div className="hidden w-full min-h-screen  md:flex font-poppins ">
@@ -32,7 +85,7 @@ function Dashboard() {
               <div className="space-y-8 ">
                 <div className="space-y-2">
                   <h2 className="text-3xl text-white">
-                    Hi <span className="font-bold">Dandy</span>!
+                    Hi <span className="font-bold">{user.name}</span>!
                   </h2>
                   <h4 className="text-white text-[15px]">Welcome Back</h4>
                 </div>
@@ -55,7 +108,7 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="z-10 relative">
+              <div className=" relative">
                 <Link href={"/dashboard/wallet"}>
                  <button className="flex py-1 px-3 text-[9px] gap-1 font-medium bg-secmain rounded-lg items-center justify-center">
                   <span>
@@ -71,19 +124,19 @@ function Dashboard() {
           <div className="bg-white h-64 w-full relative -top-12 rounded-t-[36px] p-4 space-y-4">
             <h2 className="font-semibold text-lg">Quick Access</h2>
             <div className="w-full grid grid-cols-2 gap-x-3 gap-y-2">
-              <Link href={"/"}>
+              <Link href={"/dashboard/giftcards/sell"}>
                 <div className="w-full h-24 bg-secmain flex flex-col space-y-4 justify-between items-start px-3 py-2 rounded-[15px]">
                   <img src="/cashq.png" alt="" />
                   <h2 className="text-xs font-medium">Sell Gift cards</h2>
                 </div>
               </Link>
-              <Link href={"/"}>
+              <Link href={"/dashboard/giftcards/buy"}>
                 <div className="w-full h-24 bg-secmain flex flex-col space-y-4 justify-between items-start px-3 py-2 rounded-[15px]">
                   <img src="/giftq.png" alt="" />
                   <h2 className="text-xs font-medium">Buy Gift cards</h2>
                 </div>
               </Link>
-              <Link href={"/"}>
+              <Link href={"/dashboard/crypto"}>
                 <div className="w-full h-24 bg-secmain flex flex-col space-y-4 justify-between items-start px-3 py-2 rounded-[15px]">
                   <img src="/cryptoq.png" alt="" />
                   <h2 className="text-xs font-medium">Trade Crypto</h2>
