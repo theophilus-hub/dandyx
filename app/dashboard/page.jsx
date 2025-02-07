@@ -74,7 +74,7 @@ const router = useRouter();
         <main className=" font-poppins ">
           <div className="relative h-[50vh] bg-main">
             <img
-              src="/group.png"
+              src="/Group.png"
               className="absolute top-0 w-[100vw] h-[50vh] z-0"
               alt=""
             />
